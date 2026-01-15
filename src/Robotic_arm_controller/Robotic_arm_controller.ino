@@ -1,4 +1,5 @@
 #include <Wire.h>
+#include <ESP32Servo.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
@@ -12,6 +13,9 @@ static const uint8_t I2C_SDA = 8;
 static const uint8_t I2C_SCL = 9;
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+Servo MyServo[3];
+
+
 
 // ---------- Inputs ----------
 static const uint8_t BTN_SELECT  = 4;  // change joint
@@ -121,6 +125,9 @@ void setup() {
   Serial.begin(115200);
   delay(200);
 
+  MyServo[1].attach(7, 500, 2500);
+  MyServo[2].attach(15, 500, 2500);
+
   pinMode(BTN_SELECT, INPUT_PULLUP);
   pinMode(BTN_CONFIRM, INPUT_PULLUP);
 
@@ -162,6 +169,7 @@ void loop() {
     Serial.print("Confirmed J"); Serial.print(joint);
     Serial.print(" = "); Serial.println(confirmedAngle[joint]);
     maybeUpdateUI(true); // forced update (still rate-limited)
+    MyServo[joint].write(confirmedAngle[joint]);
   }
 
   // ---- 3) Read pot (and filter noise) ----
