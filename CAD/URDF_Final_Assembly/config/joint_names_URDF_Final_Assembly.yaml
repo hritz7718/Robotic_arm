@@ -1,0 +1,1 @@
+controller_joint_names: ['', 'Base_rotation', 'Base_Link_1', 'Link_1_2', 'Link_2_3', 'Link_3_Gripper_1', 'Link_3_Gripper__2', ]
